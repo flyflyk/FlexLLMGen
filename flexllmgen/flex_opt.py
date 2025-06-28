@@ -1275,10 +1275,10 @@ def run_flexllmgen(args):
 def add_parser_arguments(parser):
     parser.add_argument("--model", type=str, default="facebook/opt-6.7b",
         help="The model name.")
-    parser.add_argument("--path", type=str, default="~/opt_weights",
+    parser.add_argument("--path", type=str, default="~/FlexLLMGen/model_weights",
         help="The path to the model weights. If there are no cached weights, "
              "FlexLLMGen will automatically download them from HuggingFace.")
-    parser.add_argument("--offload-dir", type=str, default="~/flexllmgen_offload_dir",
+    parser.add_argument("--offload-dir", type=str, default="~/FlexLLMGen/offload_dir",
         help="The directory to offload tensors. ")
     parser.add_argument("--prompt-len", type=int, default=512)
     parser.add_argument("--gen-len", type=int, default=32)
