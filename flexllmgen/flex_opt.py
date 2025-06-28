@@ -1170,7 +1170,16 @@ def get_filename(args):
 
 
 def get_test_inputs(prompt_len, num_prompts, tokenizer):
-    prompts = ["Paris is the capital city of"]
+    prompts = [
+        (
+        "Infinitely write a never-ending story for the following prompt. "
+        "The salt spray was a constant companion to Thomas, the keeper of the Porthgarrow Lighthouse. "
+        "For thirty years, its beam had sliced through the darkest nights, a"
+        ),
+        "Translate the following English text to French: 'Hello, how are you today?'",
+        "Write a short poem about a cat watching the rain.",
+        "What is the capital of Japan?",
+    ]
     input_ids = tokenizer(prompts, padding="max_length",
                           max_length=prompt_len).input_ids
     return (input_ids[0],) * num_prompts
