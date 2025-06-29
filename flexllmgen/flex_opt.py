@@ -1169,17 +1169,20 @@ def get_filename(args):
     return filename
 
 
-def get_test_inputs(prompt_len, num_prompts, tokenizer):
-    prompts = [
-        (
-        "Infinitely write a never-ending story for the following prompt. "
-        "The salt spray was a constant companion to Thomas, the keeper of the Porthgarrow Lighthouse. "
-        "For thirty years, its beam had sliced through the darkest nights, a"
-        ),
-        "Translate the following English text to French: 'Hello, how are you today?'",
-        "Write a short poem about a cat watching the rain.",
-        "What is the capital of Japan?",
-    ]
+def get_test_inputs(prompt_len, num_prompts, tokenizer, prompt_text=None):
+    if prompt_text:
+        prompts = [prompt_text]
+    else:
+        prompts = [
+            (
+            "Infinitely write a never-ending story for the following prompt. "
+            "The salt spray was a constant companion to Thomas, the keeper of the Porthgarrow Lighthouse. "
+            "For thirty years, its beam had sliced through the darkest nights, a"
+            ),
+            "Translate the following English text to French: 'Hello, how are you today?'",
+            "Write a short poem about a cat watching the rain.",
+            "What is the capital of Japan?",
+        ]
     input_ids = tokenizer(prompts, padding="max_length",
                           max_length=prompt_len).input_ids
     return (input_ids[0],) * num_prompts
@@ -1196,7 +1199,7 @@ def run_flexllmgen(args):
 
     # Task and policy
     warmup_inputs = get_test_inputs(32, num_prompts, tokenizer)
-    inputs = get_test_inputs(prompt_len, num_prompts, tokenizer)
+    inputs = get_test_inputs(prompt_len, num_prompts, tokenizer, args.prompt_text)
 
     gpu = TorchDevice("cuda:0")
     cpu = TorchDevice("cpu")
@@ -1287,6 +1290,8 @@ def add_parser_arguments(parser):
     parser.add_argument("--path", type=str, default="~/FlexLLMGen/model_weights",
         help="The path to the model weights. If there are no cached weights, "
              "FlexLLMGen will automatically download them from HuggingFace.")
+    parser.add_argument("--prompt-text", type=str, default=None,
+        help="The prompt text to use for generation.")
     parser.add_argument("--offload-dir", type=str, default="~/FlexLLMGen/offload_dir",
         help="The directory to offload tensors. ")
     parser.add_argument("--prompt-len", type=int, default=512)
