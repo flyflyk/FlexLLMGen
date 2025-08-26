@@ -76,6 +76,8 @@ class TorchTensor:
 
     def __init__(self, shape, dtype, data, device, name=None):
         if isinstance(data, torch.Tensor):
+            if data.device != device.dev:
+                print(f"Device mismatch! data.device: {data.device}, device.dev: {device.dev}, tensor name: {name}")
             assert data.device == device.dev
 
         self.shape = shape
